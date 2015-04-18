@@ -5,7 +5,7 @@ umbral=0.5;
 tasa= 0.1;
 weight=zeros(1,2); %hacer aleatorio
 %training=[[0,0,0];[0,1,0];[1,0,0];[1,1,1]];
-training=generateTrainingAnd(2);
+[training, V] =generateTrainingAnd(2);
 
 while 1
     count = 0;
@@ -14,13 +14,13 @@ while 1
             disp(weight(j));
         end
         n=size(training,2);
-        sum= training(i,1:n-1)*weight';
+        sum= training(i,1:n)*weight';
         if (sum > umbral)
             ret=1;
         else
             ret=0;
         end
-        error = training(i,n)-ret;
+        error = V(i)-ret;
         if(error~=0)
             count = count + 1;
             for z=1:size(weight,2)
