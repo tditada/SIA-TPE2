@@ -1,20 +1,21 @@
-function ret=simplePerceptron()
+function ret=simplePerceptron(n)
 
 disp('Entrando al perceptron simple');
 umbral=0.5;
-tasa= 0.1;
-weight=zeros(1,2); %hacer aleatorio
-%training=[[0,0,0];[0,1,0];[1,0,0];[1,1,1]];
-[training, V] =generateTrainingAnd(2);
+tasa= 0.05;
+weight=zeros(1,n); %hacer aleatorio
+[training, V] = generateTrainingAnd(n);
 
 while 1
     count = 0;
+%     for j=1:n
+%         disp(weight(j));
+%     end
     for i=1:size(training,1)
-        for j=1:size(weight,2)
-            disp(weight(j));
-        end
-        n=size(training,2);
-        sum= training(i,1:n)*weight';
+        sum= training(i,:)*weight';
+%         disp('sum y V')
+%         disp(sum)
+%         disp(V(i))
         if (sum > umbral)
             ret=1;
         else
@@ -23,7 +24,7 @@ while 1
         error = V(i)-ret;
         if(error~=0)
             count = count + 1;
-            for z=1:size(weight,2)
+            for z=1:n
                 weight(z) = weight(z)+ tasa*error*training(i,z);
             end
         end
@@ -32,5 +33,7 @@ while 1
         break;
     end
 end
+
+ret = weight;
 
 end
