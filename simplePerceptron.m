@@ -1,19 +1,18 @@
 function ret=simplePerceptron(n)
 
 disp('Entrando al perceptron simple');
-threshold=0.5;
-learning_rate= 0.1;
-weight=zeros(n,1); %PREGUNTAR RANGO
-[training, expected] =generateTrainingAnd(n);
-
+tasa= 0.5;
+weight=zeros(1,n + 1);
+for i = 1:n + 1
+    weight(i) = 2*rand() - 1;
+end
+[training, V] = generateTrainingAnd(n);
+training = [-1 * ones(size(training,1),1) training];
 while 1
     count = 0;
     for i=1:size(training,1)
-        for j=1:size(weight,2)
-            disp(weight(j));
-        end
-        sum= training(i,1:2^n)*transpose(weight);
-        if (sum > threshold)
+        sum= training(i,:)*transpose(weight);
+        if (sum > 0)
             ret=1;
         else
             ret=0;
@@ -21,14 +20,21 @@ while 1
         error = V(i)-ret;
         if(error~=0)
             count = count + 1;
-            for z=1:size(weight,2)
-                weight(z) = weight(z)+ learning_rate*error*training(i,z);
+            for z=1:n + 1
+                weight(z) = weight(z)+ tasa*error*training(i,z);
             end
         end
     end
     if (count == 0)
         break;
     end
+    if (tasa > 0.05)
+        tasa = tasa - 0.05;
+    elseif (tasa < 0.05)
+        tasa = 0.01;
+    end
 end
+
+ret = weight;
 
 end
