@@ -14,7 +14,7 @@ while 1
             disp(weight(j));
         end
         n=size(training,2);
-        sum= scalarSum(training(i,1:n-1),weight);
+        sum= training(i,1:n-1)*weight';
         if (sum > umbral)
             ret=1;
         else
