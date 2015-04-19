@@ -11,7 +11,7 @@ training = [-1 * ones(size(training,1),1) training];
 while 1
     count = 0;
     for i=1:size(training,1)
-        sum= training(i,:)*weight';
+        sum= training(i,:)*transpose(weight);
         if (sum > 0)
             ret=1;
         else
