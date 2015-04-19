@@ -1,9 +1,11 @@
 function ret = multiLayeredPerceptron(inputAmount, middleAmount, outputAmount, learningFunction, gName)
+	%learningRate = 0.1;
 	[training, expected] = generateTraining(learningFunction, inputAmount);
 	firstLayerWeights = twoLayerGenerator(inputAmount, middleAmount);
 	secondLayerWeights = twoLayerGenerator(middleAmount, outputAmount);
 	firstOutput = layerOutput(training, firstLayerWeights, gName, middleAmount);
 	secondOutput = layerOutput(firstOutput, secondLayerWeights, gName, outputAmount);
+	
 	disp('first layer weights');
 	disp(firstLayerWeights);
 	disp('second layer weights');
@@ -15,6 +17,13 @@ function ret = multiLayeredPerceptron(inputAmount, middleAmount, outputAmount, l
 	ret = secondOutput;
 	disp('ret');
 	disp(ret);
+
+	%TO-DO: backpropagation
+	%vec_error = expected - ret;
+	%deriv = zeros(size(training,1), 1);
+	%for i = 1:size(training,1)
+	%	deriv(i,1) = gDerivated(gName, h2(1,1));
+	%end
 end
 
 function ans = layerOutput(training, firstLayerWeights, gName, outputSize)
