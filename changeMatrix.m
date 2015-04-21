@@ -21,15 +21,15 @@ for i = 1:outputAmount
 end
 
 delta_2 = (S - o(2:end)).*g_2_prim;
-secondLayer = [zeros(outputAmount,1) delta_2*transpose(V(2:end))];
+secondLayer = delta_2*transpose(V);
 
 g_1_prim = zeros(layerAmount,1);
 for i = 1:layerAmount
     g_1_prim(i) = gDerivated(gName, h_1(i));
 end
 
-delta_1 = transpose(g_2_prim)*W_2(:,2:end) .* transpose(g_1_prim);
-firstLayer = [zeros(layerAmount,1) transpose(delta_1)*transpose(E(2:end))];
+delta_1 = transpose(W_2(:,2:end))*g_2_prim .* g_1_prim;
+firstLayer = delta_1*transpose(E);
 
 end
 
