@@ -28,7 +28,7 @@ for i = 1:layerAmount
     g_1_prim(i) = gDerivated(gName, h_1(i));
 end
 
-delta_1 = transpose(W_2(:,2:end))*g_2_prim .* g_1_prim;
+delta_1 = transpose(W_2(:,2:end))*delta_2.* g_1_prim;
 firstLayer = delta_1*transpose(E);
 
 end
