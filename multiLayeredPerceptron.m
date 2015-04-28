@@ -3,7 +3,7 @@
 clear;
 inputAmount = 2;
 middleAmount = 3;
-learningFunction = 'and';
+learningFunction = 'parity';
 gName = 'sigmodea';
 
 [training, expected] = generateTraining(learningFunction, inputAmount);
@@ -12,7 +12,7 @@ W_2 = weightGenerator(middleAmount, 1);
 
 W_1_best = W_1;
 W_2_best = W_2;
-E_best = 100000;
+E_best = 10000;
 
 training = [-1*ones(size(training,1),1) training];
 
@@ -20,7 +20,7 @@ change_weight = 0.5;
 
 diff = 0;
 
-for i = 1:1000000
+for i = 1:100000
     fL = zeros(size(W_1));
     sL = zeros(size(W_2));
     E = 0;
@@ -53,7 +53,7 @@ for i = 1:1000000
         [fL, sL] = changeMatrix(transpose(training(training_number,:)), h_1, V, W_2, h_2, o, expected(training_number), gName);
     end
     
-%    W_1 = W_1 + change_weight*fL;
+    W_1 = W_1 + change_weight*fL;
     W_2 = W_2 + change_weight*sL;
     if (mod(i,25) == 0)
         E_best = E;
@@ -61,7 +61,7 @@ for i = 1:1000000
         W_2_best = W_2;
     end
     if (change_weight > 0.01)
-        change_weight = change_weight*0.95;
+        change_weight = change_weight*0.97;
     else
         change_weight = 0.5;
     end
