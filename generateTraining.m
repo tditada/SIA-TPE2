@@ -16,6 +16,6 @@ function [training, expected] = generateTraining(learningFunction, inputAmount)
 			[training, expected]=generateTrainingSymmetry(inputAmount);
 			break;
 		otherwise
-			disp('malisimo');
+			disp('Invalid function');
 	end
 end
