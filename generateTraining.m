@@ -6,8 +6,8 @@ function [training, expected] = generateTraining(learningFunction, inputAmount)
 			[training, expected]=generateTrainingOr(inputAmount);
 		case 'parity'
 			[training, expected]=generateTrainingParity(inputAmount);	
-		case 'simetry'
-			[training, expected]=generateTrainingSimetry(inputAmount);
+		case 'symmetry'
+			[training, expected]=generateTrainingSymmetry(inputAmount);
 		otherwise
 			disp('malisimo');
 	end
