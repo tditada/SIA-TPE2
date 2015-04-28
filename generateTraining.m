@@ -4,6 +4,8 @@ function [training, expected] = generateTraining(learningFunction, inputAmount)
 			[training, expected]=generateTrainingAnd(inputAmount);
 		case 'or'
 			[training, expected]=generateTrainingOr(inputAmount);
+		case 'xor'
+			[training, expected]=generateTrainingXor(inputAmount);
 		case 'parity'
 			[training, expected]=generateTrainingParity(inputAmount);	
 		case 'symmetry'

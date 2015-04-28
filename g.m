@@ -5,6 +5,7 @@ function o = g(gName, x, threshold)
 		case 'sigmodea'
 			o = tanh(0.5*x);
 		case 'lineal'
+			o = x;
 		otherwise
 			disp('not a valid function');
 	end
