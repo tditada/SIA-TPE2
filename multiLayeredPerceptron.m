@@ -1,9 +1,9 @@
-%function ret = multiLayeredPerceptron(inputAmount, middleAmount, learningFunction, gName)
+function ret = multiLayeredPerceptron()
 %learningRate = 0.1;
-clear;
+% clear;
 inputAmount = 2;
-middleAmount = 3;
-learningFunction = 'parity';
+middleAmount = 2;
+learningFunction = 'xor';
 gName = 'sigmodea';
 
 [training, expected] = generateTraining(learningFunction, inputAmount);
@@ -69,4 +69,4 @@ end
 
 plot(diff); shg;
 
-%end
+end
