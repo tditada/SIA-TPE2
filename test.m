@@ -11,6 +11,7 @@ gName = 'sigmodea';
 training = [training, expected];
 
 [W_1, W_2, diff] = multiLayeredPerceptron(training, middleAmount, gName, maxIt, calcAllFreq, ETol);
+subplot(2,1,1)
 plot(diff); shg;
 
 %%
@@ -21,5 +22,6 @@ for i=1:trainingAmount
     [h_2, o] = calculateLayer(W_2, V, gName);
     Out(i) = o(2);
 end
+subplot(2,1,2)
 plot(training(:,1),Out); hold on;
 plot(training(:,1),expected,'r'); shg
