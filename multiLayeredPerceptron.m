@@ -23,8 +23,10 @@ for i = 1:maxIt
     E = 0;
     if (mod(i,calcAllFreq) == 0 || i == 1)
         %To calculate how the error changes.
+        randomOrdered = randperm(size(training,1));
+
         for training_number = 1:size(training,1)
-            [h_1, V] = calculateLayer(W_1, transpose(training(training_number,:)), gName);
+            [h_1, V] = calculateLayer(W_1, transpose(training(randomOrdered(training_number),:)), gName);
             [h_2, o] = calculateLayer(W_2, V, 'lineal');
             E = E + 1/2*(expected(training_number) - o(2))^2;
         end
