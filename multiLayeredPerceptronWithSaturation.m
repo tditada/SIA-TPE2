@@ -1,4 +1,4 @@
-function [W_1_best, W_2_best, diff] = multiLayeredPerceptron(trainingSet, middleAmount, gName, maxIt, calcAllFreq, ETol)
+function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturation(trainingSet, middleAmount, gName, maxIt, calcAllFreq, ETol)
 
 training = trainingSet(:,1:end-1);
 expected = trainingSet(:,end);
@@ -16,6 +16,10 @@ training = [-1*ones(size(training,1),1) training];
 change_weight = 0.001;
 E_best = -1;
 decreaseCounter = 0;
+
+% Saturation counter
+error_epoca = ones(1,calcAllFreq);
+error_dif = ones(1,calcAllFreq);
 
 for i = 1:maxIt
     fL = zeros(size(W_1));
@@ -76,6 +80,32 @@ for i = 1:maxIt
         % Break if error is smaller than tollerance
         if (E < ETol)
             break;
+        end
+
+        %Calculate saturation
+        error_epoca(mod(i,calcAllFreq) + 1)= E;
+        if (i != 1 && mod(i,calcAllFreq) == 0)
+            %Calculate if there is saturation
+            error_dif(1)=1;
+            for k=1:(size(error_dif,2)-1)
+                if(abs(error_epoca(k) - error_epoca(k+1)) < 0.001)
+                    error_dif(k+1)=1;
+                else
+                    error_dif(k+1)=0;
+                end
+            end
+            for k=1:(size(error_dif,2)-1)
+                error_dif(k+1)=error_dif(k)&error_dif(k+1);
+            end
+            %if there is saturation
+            if (error_dif(size(error_dif,2)) == 1)
+                disp('saturacion');
+                disp(i);
+                disp(' ');
+                delta = rand()/10;
+                W_1 = W_1 + delta;
+                W_2 = W_2 + delta;
+            end
         end
     else
         % To calculate how we should change the weights and changing the weights.

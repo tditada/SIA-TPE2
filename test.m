@@ -9,7 +9,7 @@ gName = 'sigmodea';
 [training, expected] = generateTrainingTPfunctionChosenOnes(trainingAmount);
 training = [training, expected];
 
-[W_1, W_2, diff] = multiLayeredPerceptron(training, middleAmount, gName, maxIt, calcAllFreq, ETol);
+[W_1, W_2, diff] = multiLayeredPerceptronWithSaturation(training, middleAmount, gName, maxIt, calcAllFreq, ETol);
 
 %%
 subplot(1,2,1);
