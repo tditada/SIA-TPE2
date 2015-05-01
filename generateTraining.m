@@ -11,6 +11,6 @@ function [training, expected] = generateTraining(learningFunction, inputAmount)
 		case 'symmetry'
 			[training, expected]=generateTrainingSymmetry(inputAmount);
 		otherwise
-			disp('malisimo');
+			disp('invalid function');
 	end
 end
