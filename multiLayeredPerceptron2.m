@@ -1,8 +1,8 @@
-function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron(trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol)
+function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2(trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol)
 
 training = trainingSet(:,1:end-1);
 expected = trainingSet(:,end);
-inputAmount = size(training,2);
+inputAmount = 1;
 
 % Generate random weights.
 W_1 = weightGenerator(inputAmount, middleAmount_2);
@@ -21,13 +21,26 @@ decreaseCounter = 0;
 for i = 1:maxIt
     fL = zeros(size(W_1));
     sL = zeros(size(W_2));
+    tL = zeros(size(W_3));
     E = 0;
     if (mod(i,calcAllFreq) == 0 || i == 1)
         %To calculate how the error changes.
         for training_number = 1:size(training,1)
             [h_1, V_1] = calculateLayer(W_1, transpose(training(training_number,:)), gName);
+            disp('h_1');
+            disp(h_1);
+            disp('V_1');
+            disp(V_1);
             [h_2, V_2] = calculateLayer(W_2, V_1, gName);
+            disp('h_2');
+            disp(h_2);
+            disp('V_2');
+            disp(V_2);
             [h_3, o] = calculateLayer(W_3, V_2, 'lineal');
+            disp('h_3');
+            disp(h_3);
+            disp('o');
+            disp(o);
             E = E + 1/2*(expected(training_number) - o(2))^2;
         end
 
@@ -62,11 +75,11 @@ for i = 1:maxIt
         
         % Output. Both to command-line and to screen.
         if (mod(i,20*calcAllFreq) == 0)
-            disp(W_1_best);
-            disp(W_2_best);
-            disp(W_3_best);
-            disp(i/maxIt);
-            disp(E_best);
+           % disp(W_1_best);
+           % disp(W_2_best);
+           % disp(W_3_best);
+           % disp(i/maxIt);
+           % disp(E_best);
             Out = zeros(size(training,1),1);
             for j=1:size(training,1)
                 [h_1, V_1] = calculateLayer(W_1_best, transpose(training(training_number,:)), gName);
