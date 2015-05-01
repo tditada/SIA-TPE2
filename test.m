@@ -6,7 +6,7 @@ maxIt = 10000000;
 calcAllFreq = trainingAmount;
 ETol = 0.005;
 gName = 'sigmodea';
-[training, expected] = generateTrainingTPfunction(trainingAmount,0);
+[training, expected] = generateTrainingTPfunctionChosenOnes(trainingAmount);
 training = [training, expected];
 
 [W_1, W_2, diff] = multiLayeredPerceptron(training, middleAmount, gName, maxIt, calcAllFreq, ETol);
