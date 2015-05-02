@@ -14,7 +14,7 @@ W_1_best = W_1; W_2_best = W_2; W_3_best = W_3;
 training = [-1*ones(size(training,1),1) training];
 
 % Start values
-change_weight = 0.001;
+change_weight = 0.05;
 E_best = -1;
 decreaseCounter = 0;
 
@@ -64,7 +64,7 @@ for i = 1:maxIt
             W_3_best = W_3;
             decreaseCounter = decreaseCounter + 1;
             if (decreaseCounter == 5)
-                change_weight = 2*change_weight;
+                change_weight = change_weight + 0.2;
                 decreaseCounter = 0;
             end
         end
