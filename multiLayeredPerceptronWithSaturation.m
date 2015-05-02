@@ -88,11 +88,7 @@ for i = 1:maxIt
             %Calculate if there is saturation
             error_dif(1)=1;
             for k=1:(size(error_dif,2)-1)
-<<<<<<< HEAD
                 if(abs(error_epoca(k) - error_epoca(k+1)) < 0.001)
-=======
-                if(abs(error_epoca(k) - error_epoca(k+1)) < 0.01)
->>>>>>> 1eff257ba3c05d9957dd2fad20ead40727a20a89
                     error_dif(k+1)=1;
                 else
                     error_dif(k+1)=0;
@@ -106,11 +102,7 @@ for i = 1:maxIt
                 disp('saturacion');
                 disp(i);
                 disp(' ');
-<<<<<<< HEAD
                 delta = rand()/10;
-=======
-                delta = rand()/1;
->>>>>>> 1eff257ba3c05d9957dd2fad20ead40727a20a89
                 W_1 = W_1 + delta;
                 W_2 = W_2 + delta;
             end
