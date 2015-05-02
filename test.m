@@ -1,6 +1,6 @@
 %% Test
 clear; clf
-trainingAmount = 200;
+trainingAmount = 100;
 middleAmount = 15;
 maxIt = 10000000;
 calcAllFreq = trainingAmount;
@@ -8,7 +8,6 @@ ETol = 0.005;
 gName = 'sigmodea';
 [training, expected] = generateTrainingTPfunctionChosenOnes(trainingAmount);
 training = [training, expected];
-
 
 [W_1, W_2, diff] = multiLayeredPerceptronWithSaturation(training, middleAmount, gName, maxIt, calcAllFreq, ETol);
 subplot(2,1,1)
