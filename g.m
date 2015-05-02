@@ -7,6 +7,6 @@ function o = g(gName, x, threshold)
 		case 'lineal'
 			o = x;
 		otherwise
-			disp('not a valid function');
+			disp('Invalid g function');
 	end
 end

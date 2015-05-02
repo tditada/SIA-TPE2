@@ -5,6 +5,6 @@ function o = gDerivated(gName, x)
         case 'lineal'
             o = 1;
 		otherwise
-			disp('not a valid function');
+			disp('Invalid gDerivated function');
 	end
 end

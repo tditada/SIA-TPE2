@@ -11,6 +11,10 @@ function [training, expected] = generateTraining(learningFunction, inputAmount)
 		case 'symmetry'
 			[training, expected]=generateTrainingSymmetry(inputAmount);
 		otherwise
+<<<<<<< HEAD
 			disp('invalid function');
+=======
+			disp('Invalid function');
+>>>>>>> 8c75712b3bf0a11f880831e7a7029b2f545108d7
 	end
 end
