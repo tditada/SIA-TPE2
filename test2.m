@@ -10,6 +10,7 @@ gName = 'sigmodea';
 [training, expected] = generateTrainingTPfunctionChosenOnes(trainingAmount);
 training = [training, expected];
 
+<<<<<<< HEAD
 %function [W, diff] = trainNet(trainingAmount, hiddenAmount, middleAmount, maxIt, Etol, gName, saturationControl)
 %[W, diff] = multiLayeredPerceptron2(training, middleAmount, gName, maxIt, ETol);
 %function [W, diff] = trainNet(trainingAmount, hiddenAmount, middleAmount, maxIt, Etol, gName, saturationControl)

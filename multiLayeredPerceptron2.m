@@ -34,12 +34,12 @@ for i = 1:maxIt
             [h_2, V_2] = calculateLayer(W_2, V_1, gName);
             [h_3, o] = calculateLayer(W_3, V_2, 'lineal');
             E = E + 1/2*(expected(training_number) - o(2))^2;
+
                 % Adding a new data point over error-history.
                 if(i ~= 1)
                     diff(i/trainingAmount) = E;
                 end
             end
-
 
         % Part that regulates how change_weight changes. Decrease if the
         % error doesn't decrease. Increase if error decreases many times in
