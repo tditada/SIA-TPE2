@@ -1,4 +1,4 @@
-function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2(trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol)
+function [W_1_best, W_2_best, W_3_best, diff, out] = multiLayeredPerceptron2(trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol)
 
     training = trainingSet(:,1:end-1);
     expected = trainingSet(:,end);
@@ -52,15 +52,28 @@ function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2(training
                 end
             end
 
-            % Part that regulates how change_weight changes. Decrease if the
-            % error doesn't decrease. Increase if error decreases many times in
-            % a row.
-            if( i!=1 && mod(i/trainingAmount,25)==0)
-                if (E >= E_best && E_best ~= -1)
-                    W_1 = W_1_best;
-                    W_2 = W_2_best;
-                    W_3 = W_3_best;
-                    change_weight = 0.999*change_weight;
+
+        % Part that regulates how change_weight changes. Decrease if the
+        % error doesn't decrease. Increase if error decreases many times in
+        % a row.
+        if( i!=1 && mod(i/trainingAmount,25)==0)
+            if (E >= E_best && E_best ~= -1)
+                W_1 = W_1_best;
+                W_2 = W_2_best;
+                W_3 = W_3_best;
+                change_weight = 0.5*change_weight;
+                decreaseCounter = 0;
+                if (change_weight < 10^-10)
+                    change_weight = 0.05;
+                end
+            elseif (E < E_best || E_best == -1)
+                E_best = E;
+                W_1_best = W_1;
+                W_2_best = W_2;
+                W_3_best = W_3;
+                decreaseCounter = decreaseCounter + 1;
+                if (decreaseCounter == 5)
+                    change_weight = change_weight + 0.2;
                     decreaseCounter = 0;
                     if (change_weight < 10^-10)
                         change_weight = 0.05;
@@ -95,16 +108,33 @@ function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2(training
                     [h_3, o] = calculateLayer(W_3, V_2, 'lineal');
                     Out(j) = o(2);
                 end
-                subplot(1,2,1); plot(diff);
-                subplot(1,2,2);
-                plot(training(:,2)',Out); hold on;
-                plot(training(:,2)',expected,'r*'); hold off; shg;
+            end           
+        end
+        % Output. Both to command-line and to screen.
+        if (mod(i,10*trainingAmount) == 0)
+           % disp(W_1_best);
+           % disp(W_2_best);
+           % disp(W_3_best);
+           % disp(i/maxIt);
+           % disp(E_best);
+            Out = zeros(size(training,1),1);
+            for j=1:size(training,1)
+                [h_1, V_1] = calculateLayer(W_1, transpose(training(j,:)), gName);
+                [h_2, V_2] = calculateLayer(W_2, V_1, gName);
+                [h_3, o] = calculateLayer(W_3, V_2, 'lineal');
+                Out(j) = o(2);
+                out=Out;
             end
-            
-            % Break if error is smaller than tollerance
-            if (E < ETol)
-                break;
-            end
+            subplot(1,2,1); plot(diff);
+            subplot(1,2,2);
+            plot(training(:,2)',Out); hold on;
+            plot(training(:,2)',expected,'r*'); hold off; shg;
+        end
+        
+        % Break if error is smaller than tollerance
+        if (E < ETol)
+            return;
+        end
         else
             % To calculate how we should change the weights and changing the weights.
             training_number = floor(rand()*size(training,1)+1);
