@@ -42,7 +42,7 @@ end
 delta_1 = transpose(W_2(:,2:end))*delta_2.* g_1_prim;
 firstLayer = delta_1*transpose(E);
 
-disp(firstLayer);
-disp(secondLayer);
-disp(thirdLayer);
+% disp(firstLayer);
+% disp(secondLayer);
+% disp(thirdLayer);
 end

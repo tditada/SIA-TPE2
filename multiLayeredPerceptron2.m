@@ -1,4 +1,4 @@
-function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2(trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol)
+function [W_1_best, W_2_best, W_3_best, diff, out] = multiLayeredPerceptron2(trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol)
 
 training = trainingSet(:,1:end-1);
 expected = trainingSet(:,end);
@@ -20,8 +20,8 @@ E_best = -1;
 decreaseCounter = 0;
 
 for i = 1:maxIt
-    disp('epoca');
-    disp(i/trainingAmount);
+    % disp('epoca');
+    % disp(i/trainingAmount);
     fL = zeros(size(W_1));
     sL = zeros(size(W_2));
     tL = zeros(size(W_3));
@@ -60,7 +60,7 @@ for i = 1:maxIt
                 W_1 = W_1_best;
                 W_2 = W_2_best;
                 W_3 = W_3_best;
-                change_weight = 0.999*change_weight;
+                change_weight = 0.5*change_weight;
                 decreaseCounter = 0;
                 if (change_weight < 10^-10)
                     change_weight = 0.05;
@@ -72,7 +72,7 @@ for i = 1:maxIt
                 W_3_best = W_3;
                 decreaseCounter = decreaseCounter + 1;
                 if (decreaseCounter == 5)
-                    change_weight = change_weight + 0.4;
+                    change_weight = change_weight + 0.2;
                     decreaseCounter = 0;
                     if (change_weight >1)
                       change_weight = 0.5;
@@ -93,6 +93,7 @@ for i = 1:maxIt
                 [h_2, V_2] = calculateLayer(W_2, V_1, gName);
                 [h_3, o] = calculateLayer(W_3, V_2, 'lineal');
                 Out(j) = o(2);
+                out=Out;
             end
             subplot(1,2,1); plot(diff);
             subplot(1,2,2);
@@ -102,7 +103,7 @@ for i = 1:maxIt
         
         % Break if error is smaller than tollerance
         if (E < ETol)
-            break;
+            return;
         end
     else
         % To calculate how we should change the weights and changing the weights.
