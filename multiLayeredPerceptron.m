@@ -1,4 +1,4 @@
-function [W, diff] = multiLayeredPerceptron(trainingSet, middleAmount, gName, maxIt, ETol, hasAdaptativeEta)
+function [W, diff] = multiLayeredPerceptron(trainingSet, middleAmount, gName, maxIt, ETol, hasAdaptativeEta, a_etha, b_etha)
 
 training = trainingSet(:,1:end-1);
 expected = trainingSet(:,end);
@@ -37,7 +37,7 @@ for i = 1:maxIt
             if (E >= E_best && E_best ~= -1)
                 W_1 = W_1_best;
                 W_2 = W_2_best;
-                change_weight = 0.5*change_weight;
+                change_weight = b_etha*change_weight;
                 decreaseCounter = 0;
                 if (change_weight < 10^-10)
                     change_weight = 0.1;
@@ -48,7 +48,7 @@ for i = 1:maxIt
                 W_2_best = W_2;
                 decreaseCounter = decreaseCounter + 1;
                 if (decreaseCounter == 5)
-                    change_weight = change_weight + 0.4;
+                    change_weight = change_weight + a_etha;
                     decreaseCounter = 0;
                 end
             end
@@ -80,7 +80,7 @@ for i = 1:maxIt
         if (E < ETol)
             W{1} = W_1_best;
             W{2} = W_2_best;
-            break;
+            return;
         end
     else
         % To calculate how we should change the weights and changing the weights.

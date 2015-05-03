@@ -1,5 +1,5 @@
-function [W, diff] = multiLayeredPerceptronWithSaturationControl2(saturationControl, trainingSet, middleAmount, gName, maxIt, ETol, hasAdaptativeEta)
-
+function [W, diff] = multiLayeredPerceptronWithSaturationControl2(saturationControl, trainingSet, middleAmount, gName, maxIt, ETol, hasAdaptativeEta, a_etha, b_etha)
+    graphics_toolkit('gnuplot');
     training = trainingSet(:,1:end-1);
     expected = trainingSet(:,end);
     trainingAmount = size (training, 1);
@@ -49,7 +49,7 @@ function [W, diff] = multiLayeredPerceptronWithSaturationControl2(saturationCont
                         W_1 = W_1_best;
                         W_2 = W_2_best;
                         W_3 = W_3_best;
-                        change_weight = 0.5*change_weight;
+                        change_weight = b_etha*change_weight;
                         decreaseCounter = 0;
                         if (change_weight < 10^-10)
                             change_weight = 0.05;
@@ -61,7 +61,7 @@ function [W, diff] = multiLayeredPerceptronWithSaturationControl2(saturationCont
                         W_3_best = W_3;
                         decreaseCounter = decreaseCounter + 1;
                         if (decreaseCounter == 5)
-                            change_weight = change_weight + 0.4;
+                            change_weight = change_weight + a_etha;
                             decreaseCounter = 0;
                             if (change_weight >1)
                               change_weight = 0.5;
@@ -95,7 +95,7 @@ function [W, diff] = multiLayeredPerceptronWithSaturationControl2(saturationCont
                 W{1} = W_1;
                 W{2} = W_2;
                 W{3} = W_3;
-                break;
+                return;
             end
         else
             % To calculate how we should change the weights and changing the weights.

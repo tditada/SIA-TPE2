@@ -1,4 +1,4 @@
-function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol)
+function [W, diff] = multiLayeredPerceptron2Momentum(trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol, hasAdaptativeEta)
 
     training = trainingSet(:,1:end-1);
     expected = trainingSet(:,end);
@@ -58,36 +58,38 @@ function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(
             % Part that regulates how change_weight changes. Decrease if the
             % error doesn't decrease. Increase if error decreases many times in
             % a row.
-            if( i!=1 && mod(i/trainingAmount,25)==0)
-                if (E >= E_best && E_best ~= -1)
-                    W_1 = W_1_best;
-                    W_2 = W_2_best;
-                    W_3 = W_3_best;
-                    % W_1_prev = W_1_best_prev;
-                    % W_2_prev = W_2_best_prev;
-                    % W_3_prev = W_3_best_prev;
-                    change_weight = 0.999*change_weight;
-                    decreaseCounter = 0;
-                    if (change_weight < 10^-10)
-                        change_weight = 0.05;
-                    end
-                elseif (E < E_best || E_best == -1)
-                    E_best = E;
-                    W_1_best = W_1;
-                    W_2_best = W_2;
-                    W_3_best = W_3;
-                    % W_1_best_prev = W_1_prev;
-                    % W_2_best_prev = W_2_prev;
-                    % W_3_best_prev = W_3_prev;
-                    decreaseCounter = decreaseCounter + 1;
-                    if (decreaseCounter == 5)
-                        change_weight = change_weight + 0.4;
+            if(hasAdaptativeEta!=-1)
+                if( i!=1 && mod(i/trainingAmount,25)==0)
+                    if (E >= E_best && E_best ~= -1)
+                        W_1 = W_1_best;
+                        W_2 = W_2_best;
+                        W_3 = W_3_best;
+                        % W_1_prev = W_1_best_prev;
+                        % W_2_prev = W_2_best_prev;
+                        % W_3_prev = W_3_best_prev;
+                        change_weight = 0.999*change_weight;
                         decreaseCounter = 0;
-                        if (change_weight >1)
-                          change_weight = 0.5;
+                        if (change_weight < 10^-10)
+                            change_weight = 0.05;
                         end
-                    end
-                end           
+                    elseif (E < E_best || E_best == -1)
+                        E_best = E;
+                        W_1_best = W_1;
+                        W_2_best = W_2;
+                        W_3_best = W_3;
+                        % W_1_best_prev = W_1_prev;
+                        % W_2_best_prev = W_2_prev;
+                        % W_3_best_prev = W_3_prev;
+                        decreaseCounter = decreaseCounter + 1;
+                        if (decreaseCounter == 5)
+                            change_weight = change_weight + 0.4;
+                            decreaseCounter = 0;
+                            if (change_weight >1)
+                              change_weight = 0.5;
+                            end
+                        end
+                    end           
+                end
             end
             % Output. Both to command-line and to screen.
             if (mod(i,trainingAmount) == 0)
@@ -112,7 +114,10 @@ function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(
             
             % Break if error is smaller than tollerance
             if (E < ETol)
-                break;
+                W{1} = W_1_best;
+                W{2} = W_2_best;
+                W{3} = W_3_best;
+                return;
             end
         else
             % To calculate how we should change the weights and changing the weights.

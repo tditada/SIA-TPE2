@@ -84,7 +84,7 @@ for i = 1:maxIt
         if (E < ETol)
             W{1} = W_1_best;
             W{2} = W_2_best;
-            break;
+            return;
         end
 
         %Calculate saturation
