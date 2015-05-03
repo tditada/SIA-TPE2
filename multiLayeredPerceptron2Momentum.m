@@ -1,15 +1,17 @@
-function [W, diff] = multiLayeredPerceptron2Momentum(trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol, hasAdaptativeEta)
+function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(W_1, W_2, W_3, saturationControl, trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol, hasAdaptativeEta)
 
     training = trainingSet(:,1:end-1);
     expected = trainingSet(:,end);
     trainingAmount = size (training, 1);
     inputAmount = 1;
-    alpha = 0.9;
+    alpha = 0.2;
+    saturationDeltaTangente = 0.001;
+    saturationDeltaExponencial = 0.01;
 
     % Generate random weights.
-    W_1 = weightGenerator(inputAmount, middleAmount_2);
-    W_2 = weightGenerator(middleAmount_2, middleAmount_3);
-    W_3 = weightGenerator(middleAmount_3, 1);
+    % W_1 = weightGenerator(inputAmount, middleAmount_2);
+    % W_2 = weightGenerator(middleAmount_2, middleAmount_3);
+    % W_3 = weightGenerator(middleAmount_3, 1);
     W_1_best = W_1; W_2_best = W_2; W_3_best = W_3;
     delta_prev_1 = 0;
     delta_prev_2 = 0;
@@ -58,6 +60,7 @@ function [W, diff] = multiLayeredPerceptron2Momentum(trainingSet, middleAmount_2
             % Part that regulates how change_weight changes. Decrease if the
             % error doesn't decrease. Increase if error decreases many times in
             % a row.
+<<<<<<< HEAD
             if(hasAdaptativeEta!=-1)
                 if( i!=1 && mod(i/trainingAmount,25)==0)
                     if (E >= E_best && E_best ~= -1)
@@ -68,6 +71,34 @@ function [W, diff] = multiLayeredPerceptron2Momentum(trainingSet, middleAmount_2
                         % W_2_prev = W_2_best_prev;
                         % W_3_prev = W_3_best_prev;
                         change_weight = 0.999*change_weight;
+=======
+            if( i!=1 && mod(i/trainingAmount,25)==0)
+                if (E >= E_best && E_best ~= -1)
+                    W_1 = W_1_best;
+                    W_2 = W_2_best;
+                    W_3 = W_3_best;
+                    alpha = 0;
+                    % W_1_prev = W_1_best_prev;
+                    % W_2_prev = W_2_best_prev;
+                    % W_3_prev = W_3_best_prev;
+                    change_weight = 0.5*change_weight;
+                    decreaseCounter = 0;
+                    if (change_weight < 10^-10)
+                        change_weight = 0.05;
+                    end
+                elseif (E < E_best || E_best == -1)
+                    E_best = E;
+                    W_1_best = W_1;
+                    W_2_best = W_2;
+                    W_3_best = W_3;
+                    alpha = 0.4;
+                    % W_1_best_prev = W_1_prev;
+                    % W_2_best_prev = W_2_prev;
+                    % W_3_best_prev = W_3_prev;
+                    decreaseCounter = decreaseCounter + 1;
+                    if (decreaseCounter == 5)
+                        change_weight = change_weight + 0.4;
+>>>>>>> ec1a602f044dc6b4afc1db3e1de7e0fcddfae2f1
                         decreaseCounter = 0;
                         if (change_weight < 10^-10)
                             change_weight = 0.05;
@@ -140,7 +171,13 @@ function [W, diff] = multiLayeredPerceptron2Momentum(trainingSet, middleAmount_2
 
 
     %Calculate saturation
-    if (i != 1 && mod(floor(i / trainingAmount), saturationControl) == 0)
+    if (i != 1 && mod(i, trainingAmount*saturationControl) == 0)
+        disp('in sat');
+        if (gName == 'tangente')
+            sat_delta = saturationDeltaTangente
+        else if (gName == 'exponencial')
+            sat_delta = saturationDeltaExponencial
+        end
         %Calculate if there is saturation
         saturation = false;
         for u= 1: size(W_1,1)

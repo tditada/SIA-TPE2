@@ -1,4 +1,5 @@
-function [W, diff, out] = multiLayeredPerceptron2(trainingSet, middleAmount, gName, maxIt,ETol, hasAdaptativeEta, a_etha, b_etha)
+function [W, diff, out] = multiLayeredPerceptron2(W_1, W_2, W_3, trainingSet, middleAmount, gName, maxIt,ETol, hasAdaptativeEta, a_etha, b_etha)
+
 %Layers amount (without the entry layer)
 
     training = trainingSet(:,1:end-1);
@@ -7,9 +8,9 @@ function [W, diff, out] = multiLayeredPerceptron2(trainingSet, middleAmount, gNa
     inputAmount = 1;
 
     % Generate random weights.
-    W_1 = weightGenerator(inputAmount, middleAmount{1});
-    W_2 = weightGenerator(middleAmount{1}, middleAmount{2});
-    W_3 = weightGenerator(middleAmount{2}, 1);
+    % W_1 = weightGenerator(inputAmount, middleAmount{1});
+    % W_2 = weightGenerator(middleAmount{1}, middleAmount{2});
+    % W_3 = weightGenerator(middleAmount{2}, 1);
     W_1_best = W_1; W_2_best = W_2; W_3_best = W_3;
 
     % Adding the first column of -1 to training-set.
