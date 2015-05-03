@@ -111,63 +111,62 @@ function [W, diff] = multiLayeredPerceptronWithSaturationControl2(saturationCont
             W_3 = W_3 + change_weight*tL;
         end
 
-    end
-
-    %Calculate saturation
-    if (i != 1 && mod(i, trainingAmount*saturationControl) == 0)
-        disp('in sat');
-        if (gName == 'tangente')
-            sat_delta = saturationDeltaTangente
-        else if (gName == 'exponencial')
-            sat_delta = saturationDeltaExponencial
-        end
-        %Calculate if there is saturation
-        saturation = false;
-        for u= 1: size(W_1,1)
-            for v = 1: size(W_1,2)
-                if(abs(W_1(u,v)) < sat_delta)
-                    disp('saturacion');
-                    disp(W_1(u,v));
-                    saturation = true;
-                    break;
-                end
+        %Calculate saturation
+        if (i != 1 && mod(i, trainingAmount*saturationControl) == 0)
+            disp('in sat');
+            if (gName == 'tangente')
+                sat_delta = saturationDeltaTangente
+            else if (gName == 'exponencial')
+                sat_delta = saturationDeltaExponencial
             end
-        end
-        if (!saturation)
-            for u = 1: size(W_2, 1)
-                for v = 2: size(W_2,2)
-                    if (abs(W_2(u,v)) < sat_delta)
+            %Calculate if there is saturation
+            saturation = false;
+            for u= 1: size(W_1,1)
+                for v = 1: size(W_1,2)
+                    if(abs(W_1(u,v)) < sat_delta)
                         disp('saturacion');
-                        disp(W_2(u,v));
+                        disp(W_1(u,v));
                         saturation = true;
                         break;
                     end
                 end
             end
-        end
-        if (!saturation)
-            for u = 1: size(W_3, 1)
-                for v = 2: size(W_3,2)
-                    if (abs(W_3(u,v)) < sat_delta)
-                        disp('saturacion');
-                        disp(W_3(u,v));
-                        saturation = true;
-                        break;
+            if (!saturation)
+                for u = 1: size(W_2, 1)
+                    for v = 2: size(W_2,2)
+                        if (abs(W_2(u,v)) < sat_delta)
+                            disp('saturacion');
+                            disp(W_2(u,v));
+                            saturation = true;
+                            break;
+                        end
                     end
                 end
             end
-        end
-        %if there is saturation
-        if (saturation)
-            disp('saturacion epoca');
-            disp(i);
-            disp(' ');
-            delta = rand()/10;
-            W_1 = W_1 + delta;
-            W_2 = W_2 + delta;
-            W_3 = W_3 + delta;
-        else
-            disp('no saturation');
+            if (!saturation)
+                for u = 1: size(W_3, 1)
+                    for v = 2: size(W_3,2)
+                        if (abs(W_3(u,v)) < sat_delta)
+                            disp('saturacion');
+                            disp(W_3(u,v));
+                            saturation = true;
+                            break;
+                        end
+                    end
+                end
+            end
+            %if there is saturation
+            if (saturation)
+                disp('saturacion epoca');
+                disp(i);
+                disp(' ');
+                delta = rand()/10;
+                W_1 = W_1 + delta;
+                W_2 = W_2 + delta;
+                W_3 = W_3 + delta;
+            else
+                disp('no saturation');
+            end
         end
     end
 
