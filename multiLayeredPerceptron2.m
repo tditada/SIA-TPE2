@@ -133,7 +133,7 @@ for i = 1:maxIt
         % Break if error is smaller than tollerance
         if (E < ETol)
             return;
-            end
+        end
         else
             % To calculate how we should change the weights and changing the weights.
             training_number = floor(rand()*size(training,1)+1);

@@ -14,10 +14,3 @@ gName = 'sigmodea';
 training = [training, expected];
 
 [W_1, W_2, W_3, diff, out] = multiLayeredPerceptron2(training, middleAmount_1, middleAmount_2, gName, maxIt, calcAllFreq, ETol);
-
-%%
-subplot(1,2,1);
-plot(diff); shg;
-subplot(1,2,2);
-plot(sort(training(:,1))',out); hold on;
-plot(sort(training(:,1))',expected,'r*'); shg
