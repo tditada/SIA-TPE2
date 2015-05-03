@@ -1,4 +1,4 @@
-function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationControl(saturationControl, trainingSet, middleAmount, gName, maxIt, calcAllFreq, ETol)
+function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationControl(saturationControl, trainingSet, middleAmount, gName, maxIt, ETol, haveAdaptativeEta)
 
     training = trainingSet(:,1:end-1);
     expected = trainingSet(:,end);
@@ -33,31 +33,32 @@ function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationContro
             % Part that regulates how change_weight changes. Decrease if the
             % error doesn't decrease. Increase if error decreases many times in
             % a row.
-            if (E >= E_best && E_best ~= -1)
-                W_1 = W_1_best;
-                W_2 = W_2_best;
-                change_weight = 0.9*change_weight;
-                decreaseCounter = 0;
-                if (change_weight < 10^-10)
-                    change_weight = 0.1;
-                end
-            elseif (E < E_best || E_best == -1)
-                E_best = E;
-                W_1_best = W_1;
-                W_2_best = W_2;
-                decreaseCounter = decreaseCounter + 1;
-                if (decreaseCounter == 5)
-                    change_weight = change_weight + 0.2;
+            if(haveAdaptativeEta!=-1)
+                if (E >= E_best && E_best ~= -1)
+                    W_1 = W_1_best;
+                    W_2 = W_2_best;
+                    change_weight = 0.9*change_weight;
                     decreaseCounter = 0;
+                    if (change_weight < 10^-10)
+                        change_weight = 0.1;
+                    end
+                elseif (E < E_best || E_best == -1)
+                    E_best = E;
+                    W_1_best = W_1;
+                    W_2_best = W_2;
+                    decreaseCounter = decreaseCounter + 1;
+                    if (decreaseCounter == 5)
+                        change_weight = change_weight + 0.2;
+                        decreaseCounter = 0;
+                    end
+                end
+                % Adding a new data point over error-history.
+                if(i ~= 1)
+                    disp(trainingAmount);
+                    disp(i);
+                    diff(i/trainingAmount) = E;
                 end
             end
-            % Adding a new data point over error-history.
-            if(i ~= 1)
-                disp(trainingAmount);
-                disp(i);
-                diff(i/trainingAmount) = E;
-            end
-            
             % Output. Both to command-line and to screen.
             if (mod(i,20*trainingAmount) == 0)
                 disp(W_1_best);
