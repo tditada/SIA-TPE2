@@ -10,8 +10,8 @@ hVector = weights*input;
 output = zeros(size(hVector,1) + 1, 1);
 output(1) = -1;
 for i = 1:size(hVector,1);
-    % apply for 'step'
-    output(i + 1) = g(gName, hVector(i), 1);
+% apply for 'step'
+output(i + 1) = g(gName, hVector(i), 1);
 end
 
 end

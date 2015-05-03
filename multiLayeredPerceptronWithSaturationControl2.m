@@ -4,6 +4,8 @@ function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationContro
     expected = trainingSet(:,end);
     trainingAmount = size (training, 1);
     inputAmount = 1;
+    saturationDeltaTangente = 0.001;
+    saturationDeltaExponencial = 0.01;
 
     % Generate random weights.
     W_1 = weightGenerator(inputAmount, middleAmount_2);
@@ -20,8 +22,6 @@ function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationContro
     decreaseCounter = 0;
 
     for i = 1:maxIt
-        disp('epoca');
-        disp(i/trainingAmount);
         fL = zeros(size(W_1));
         sL = zeros(size(W_2));
         tL = zeros(size(W_3));
@@ -121,12 +121,18 @@ function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationContro
     end
 
     %Calculate saturation
-    if (i != 1 && mod(floor(i / trainingAmount), saturationControl) == 0)
+    if (i != 1 && mod(i, trainingAmount*saturationControl) == 0)
+        disp('in sat');
+        if (gName == 'tangente')
+            sat_delta = saturationDeltaTangente
+        else if (gName == 'exponencial')
+            sat_delta = saturationDeltaExponencial
+        end
         %Calculate if there is saturation
         saturation = false;
         for u= 1: size(W_1,1)
             for v = 1: size(W_1,2)
-                if(abs(W_1(u,v)) < 0.001)
+                if(abs(W_1(u,v)) < sat_delta)
                     disp('saturacion');
                     disp(W_1(u,v));
                     saturation = true;
@@ -137,7 +143,7 @@ function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationContro
         if (!saturation)
             for u = 1: size(W_2, 1)
                 for v = 2: size(W_2,2)
-                    if (abs(W_2(u,v)) < 0.001)
+                    if (abs(W_2(u,v)) < sat_delta)
                         disp('saturacion');
                         disp(W_2(u,v));
                         saturation = true;
@@ -149,7 +155,7 @@ function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationContro
         if (!saturation)
             for u = 1: size(W_3, 1)
                 for v = 2: size(W_3,2)
-                    if (abs(W_3(u,v)) < 0.001)
+                    if (abs(W_3(u,v)) < sat_delta)
                         disp('saturacion');
                         disp(W_3(u,v));
                         saturation = true;
@@ -160,13 +166,15 @@ function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationContro
         end
         %if there is saturation
         if (saturation)
-            disp('saturacion');
+            disp('saturacion epoca');
             disp(i);
             disp(' ');
             delta = rand()/10;
             W_1 = W_1 + delta;
             W_2 = W_2 + delta;
             W_3 = W_3 + delta;
+        else
+            disp('no saturation');
         end
     end
 
