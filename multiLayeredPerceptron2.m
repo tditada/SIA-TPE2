@@ -110,7 +110,7 @@ for i = 1:maxIt
             end           
         end
         % Output. Both to command-line and to screen.
-        if (mod(i,trainingAmount) == 0)
+        if (mod(i,10*trainingAmount) == 0)
            % disp(W_1_best);
            % disp(W_2_best);
            % disp(W_3_best);
