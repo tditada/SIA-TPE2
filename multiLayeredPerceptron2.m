@@ -20,8 +20,8 @@ function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2(training
     decreaseCounter = 0;
 
     for i = 1:maxIt
-        disp('epoca');
-        disp(i/trainingAmount);
+        % disp('epoca');
+        % disp(i/trainingAmount);
         fL = zeros(size(W_1));
         sL = zeros(size(W_2));
         tL = zeros(size(W_3));

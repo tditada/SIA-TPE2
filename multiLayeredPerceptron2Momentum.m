@@ -24,12 +24,11 @@ function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(
     decreaseCounter = 0;
 
     for i = 1:maxIt
-        disp('epoca');
-        disp(i/trainingAmount);
         fL = zeros(size(W_1));
         sL = zeros(size(W_2));
         tL = zeros(size(W_3));
         E = 0;
+        %cuando termina una epoca.
         if (mod(i,trainingAmount) == 0 || i == 1)
             %To calculate how the error changes.
             for training_number = 1:size(training,1)
@@ -127,11 +126,61 @@ function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(
             W_1 = W_1 + change_weight*fL + delta_prev_1* alpha;
             W_2 = W_2 + change_weight*sL + delta_prev_2* alpha;
             W_3 = W_3 + change_weight*tL + delta_prev_3* alpha ;
-            delta_prev_1 = delta_prev_1 * alpha;
-            delta_prev_2 = delta_prev_2 * alpha;
-            delta_prev_3 = delta_prev_3 * alpha;
+            delta_prev_1 = change_weight*fL + delta_prev_1 * alpha;
+            delta_prev_2 = change_weight*sL + delta_prev_2 * alpha;
+            delta_prev_3 = change_weight*tL + delta_prev_3 * alpha;
         end
 
     end
 
+
+    %Calculate saturation
+    if (i != 1 && mod(floor(i / trainingAmount), saturationControl) == 0)
+        %Calculate if there is saturation
+        saturation = false;
+        for u= 1: size(W_1,1)
+            for v = 1: size(W_1,2)
+                if(abs(W_1(u,v)) < 0.001)
+                    disp('saturacion');
+                    disp(W_1(u,v));
+                    saturation = true;
+                    break;
+                end
+            end
+        end
+        if (!saturation)
+            for u = 1: size(W_2, 1)
+                for v = 2: size(W_2,2)
+                    if (abs(W_2(u,v)) < 0.001)
+                        disp('saturacion');
+                        disp(W_2(u,v));
+                        saturation = true;
+                        break;
+                    end
+                end
+            end
+        end
+        if (!saturation)
+            for u = 1: size(W_3, 1)
+                for v = 2: size(W_3,2)
+                    if (abs(W_3(u,v)) < 0.001)
+                        disp('saturacion');
+                        disp(W_3(u,v));
+                        saturation = true;
+                        break;
+                    end
+                end
+            end
+        end
+        %if there is saturation
+        if (saturation)
+            disp('saturacion');
+            disp(i);
+            disp(' ');
+            delta = rand()/10;
+            W_1 = W_1 + delta;
+            W_2 = W_2 + delta;
+            W_3 = W_3 + delta;
+        end
+    end
 end
