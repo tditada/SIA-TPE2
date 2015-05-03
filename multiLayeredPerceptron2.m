@@ -1,23 +1,23 @@
 function [W_1_best, W_2_best, W_3_best, diff, out] = multiLayeredPerceptron2(trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol)
 
-training = trainingSet(:,1:end-1);
-expected = trainingSet(:,end);
-trainingAmount = size (training, 1);
-inputAmount = 1;
+    training = trainingSet(:,1:end-1);
+    expected = trainingSet(:,end);
+    trainingAmount = size (training, 1);
+    inputAmount = 1;
 
-% Generate random weights.
-W_1 = weightGenerator(inputAmount, middleAmount_2);
-W_2 = weightGenerator(middleAmount_2, middleAmount_3);
-W_3 = weightGenerator(middleAmount_3, 1);
-W_1_best = W_1; W_2_best = W_2; W_3_best = W_3;
+    % Generate random weights.
+    W_1 = weightGenerator(inputAmount, middleAmount_2);
+    W_2 = weightGenerator(middleAmount_2, middleAmount_3);
+    W_3 = weightGenerator(middleAmount_3, 1);
+    W_1_best = W_1; W_2_best = W_2; W_3_best = W_3;
 
-% Adding the first column of -1 to training-set.
-training = [-1*ones(size(training,1),1) training];
+    % Adding the first column of -1 to training-set.
+    training = [-1*ones(size(training,1),1) training];
 
-% Start values, entre 0,05 y 0,5
-change_weight = 0.5;
-E_best = -1;
-decreaseCounter = 0;
+    % Start values, entre 0,05 y 0,5
+    change_weight = 0.5;
+    E_best = -1;
+    decreaseCounter = 0;
 
 for i = 1:maxIt
     % disp('epoca');
@@ -45,12 +45,12 @@ for i = 1:maxIt
             % disp('o');
             % disp(o);
             E = E + 1/2*(expected(training_number) - o(2))^2;
-
-            % Adding a new data point over error-history.
-            if(i ~= 1)
-                diff(i/trainingAmount) = E;
+                % Adding a new data point over error-history.
+                if(i ~= 1)
+                    diff(i/trainingAmount) = E;
+                end
             end
-        end
+
 
         % Part that regulates how change_weight changes. Decrease if the
         % error doesn't decrease. Increase if error decreases many times in
@@ -74,9 +74,38 @@ for i = 1:maxIt
                 if (decreaseCounter == 5)
                     change_weight = change_weight + 0.2;
                     decreaseCounter = 0;
-                    if (change_weight >1)
-                      change_weight = 0.5;
+                    if (change_weight < 10^-10)
+                        change_weight = 0.05;
                     end
+                elseif (E < E_best || E_best == -1)
+                    E_best = E;
+                    W_1_best = W_1;
+                    W_2_best = W_2;
+                    W_3_best = W_3;
+                    decreaseCounter = decreaseCounter + 1;
+                    if (decreaseCounter == 5)
+                        change_weight = change_weight + 0.4;
+                        decreaseCounter = 0;
+                        if (change_weight >1)
+                          change_weight = 0.5;
+                        end
+                    end
+                end           
+            end
+            % Output. Both to command-line and to screen.
+            if (mod(i,trainingAmount) == 0)
+               % disp(W_1_best);
+               % disp(W_2_best);
+               % disp(W_3_best);
+               % disp(i/maxIt);
+               % disp(E_best);
+                Out = zeros(size(training,1),1);
+                for j=1:size(training,1)
+                    %TO-DO: revisar si va W_1 o W_1_best
+                    [h_1, V_1] = calculateLayer(W_1, transpose(training(j,:)), gName);
+                    [h_2, V_2] = calculateLayer(W_2, V_1, gName);
+                    [h_3, o] = calculateLayer(W_3, V_2, 'lineal');
+                    Out(j) = o(2);
                 end
             end           
         end
@@ -104,21 +133,21 @@ for i = 1:maxIt
         % Break if error is smaller than tollerance
         if (E < ETol)
             return;
+            end
+        else
+            % To calculate how we should change the weights and changing the weights.
+            training_number = floor(rand()*size(training,1)+1);
+            [h_1, V_1] = calculateLayer(W_1, transpose(training(training_number,:)), gName);
+            [h_2, V_2] = calculateLayer(W_2, V_1, gName);
+            [h_3, o] = calculateLayer(W_3, V_2, 'lineal');
+            
+            [fL, sL, tL] = changeMatrix2(transpose(training(training_number,:)), h_1, V_1, W_2, h_2, V_2, W_3, h_3, o, expected(training_number), gName);
+            
+            W_1 = W_1 + change_weight*fL;
+            W_2 = W_2 + change_weight*sL;
+            W_3 = W_3 + change_weight*tL;
         end
-    else
-        % To calculate how we should change the weights and changing the weights.
-        training_number = floor(rand()*size(training,1)+1);
-        [h_1, V_1] = calculateLayer(W_1, transpose(training(training_number,:)), gName);
-        [h_2, V_2] = calculateLayer(W_2, V_1, gName);
-        [h_3, o] = calculateLayer(W_3, V_2, 'lineal');
-        
-        [fL, sL, tL] = changeMatrix2(transpose(training(training_number,:)), h_1, V_1, W_2, h_2, V_2, W_3, h_3, o, expected(training_number), gName);
-        
-        W_1 = W_1 + change_weight*fL;
-        W_2 = W_2 + change_weight*sL;
-        W_3 = W_3 + change_weight*tL;
-    end
 
-end
+    end
 
 end
