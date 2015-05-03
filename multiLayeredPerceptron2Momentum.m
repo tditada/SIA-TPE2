@@ -1,4 +1,4 @@
-function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(saturationControl, trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol)
+function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(W_1, W_2, W_3, saturationControl, trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol)
 
     training = trainingSet(:,1:end-1);
     expected = trainingSet(:,end);
@@ -9,9 +9,9 @@ function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(
     saturationDeltaExponencial = 0.01;
 
     % Generate random weights.
-    W_1 = weightGenerator(inputAmount, middleAmount_2);
-    W_2 = weightGenerator(middleAmount_2, middleAmount_3);
-    W_3 = weightGenerator(middleAmount_3, 1);
+    % W_1 = weightGenerator(inputAmount, middleAmount_2);
+    % W_2 = weightGenerator(middleAmount_2, middleAmount_3);
+    % W_3 = weightGenerator(middleAmount_3, 1);
     W_1_best = W_1; W_2_best = W_2; W_3_best = W_3;
     delta_prev_1 = 0;
     delta_prev_2 = 0;

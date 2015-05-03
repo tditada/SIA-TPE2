@@ -1,4 +1,4 @@
-function [W, diff] = multiLayeredPerceptronWithSaturationControl2(saturationControl, trainingSet, middleAmount, gName, maxIt, ETol, hasAdaptativeEta)
+function [W, diff] = multiLayeredPerceptronWithSaturationControl2(W_1, W_2, W_3, saturationControl, trainingSet, middleAmount, gName, maxIt, ETol, hasAdaptativeEta)
 
     training = trainingSet(:,1:end-1);
     expected = trainingSet(:,end);
@@ -8,9 +8,9 @@ function [W, diff] = multiLayeredPerceptronWithSaturationControl2(saturationCont
     saturationDeltaExponencial = 0.01;
 
     % Generate random weights.
-    W_1 = weightGenerator(inputAmount, middleAmount{1});
-    W_2 = weightGenerator(middleAmount{1}, middleAmount{2});
-    W_3 = weightGenerator(middleAmount{2}, 1);
+    % W_1 = weightGenerator(inputAmount, middleAmount{1});
+    % W_2 = weightGenerator(middleAmount{1}, middleAmount{2});
+    % W_3 = weightGenerator(middleAmount{2}, 1);
     W_1_best = W_1; W_2_best = W_2; W_3_best = W_3;
 
     % Adding the first column of -1 to training-set.
