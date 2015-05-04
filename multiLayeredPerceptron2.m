@@ -1,4 +1,5 @@
-function [W, diff, out] = multiLayeredPerceptron2(W_1, W_2, W_3, trainingSet, middleAmount, gName, maxIt,ETol, hasAdaptativeEta)
+function [W, diff, out] = multiLayeredPerceptron2(W_1, W_2, W_3, trainingSet, middleAmount, gName, maxIt,ETol, hasAdaptativeEta, a_etha, b_etha)
+
 %Layers amount (without the entry layer)
 
     training = trainingSet(:,1:end-1);
@@ -50,7 +51,7 @@ for i = 1:maxIt
                     W_1 = W_1_best;
                     W_2 = W_2_best;
                     W_3 = W_3_best;
-                    change_weight = 0.5*change_weight;
+                    change_weight = b_etha*change_weight;
                     decreaseCounter = 0;
                     if (change_weight < 10^-10)
                         change_weight = 0.05;
@@ -62,7 +63,7 @@ for i = 1:maxIt
                     W_3_best = W_3;
                     decreaseCounter = decreaseCounter + 1;
                     if (decreaseCounter == 5)
-                        change_weight = change_weight + 0.2;
+                        change_weight = change_weight + a_etha;
                         decreaseCounter = 0;
                         if (change_weight < 10^-10)
                             change_weight = 0.05;

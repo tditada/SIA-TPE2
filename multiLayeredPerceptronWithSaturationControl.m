@@ -1,4 +1,4 @@
-function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationControl(W_1, W_2, saturationControl, trainingSet, middleAmount, gName, maxIt, ETol, haveAdaptativeEta)
+function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationControl(W_1, W_2, saturationControl, trainingSet, middleAmount, gName, maxIt, ETol, haveAdaptativeEta, a_etha, b_etha)
 
     training = trainingSet(:,1:end-1);
     expected = trainingSet(:,end);
@@ -37,7 +37,7 @@ function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationContro
                 if (E >= E_best && E_best ~= -1)
                     W_1 = W_1_best;
                     W_2 = W_2_best;
-                    change_weight = 0.9*change_weight;
+                    change_weight = b_etha*change_weight;
                     decreaseCounter = 0;
                     if (change_weight < 10^-10)
                         change_weight = 0.1;
@@ -48,7 +48,7 @@ function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationContro
                     W_2_best = W_2;
                     decreaseCounter = decreaseCounter + 1;
                     if (decreaseCounter == 5)
-                        change_weight = change_weight + 0.2;
+                        change_weight = change_weight + a_etha;
                         decreaseCounter = 0;
                     end
                 end
@@ -79,7 +79,9 @@ function [W_1_best, W_2_best, diff] = multiLayeredPerceptronWithSaturationContro
             
             % Break if error is smaller than tollerance
             if (E < ETol)
-                break;
+                W{1} = W_1_best;
+                W{2} = W_2_best;
+                return;
             end
         else
             % To calculate how we should change the weights and changing the weights.
