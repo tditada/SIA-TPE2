@@ -1,4 +1,4 @@
-function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(W_1, W_2, W_3, saturationControl, trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol, hasAdaptativeEta, a_etha, b_etha)
+function [W, diff] = multiLayeredPerceptron2Momentum(W_1, W_2, W_3, saturationControl, trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol, hasAdaptativeEta, a_etha, b_etha)
 
     training = trainingSet(:,1:end-1);
     expected = trainingSet(:,end);

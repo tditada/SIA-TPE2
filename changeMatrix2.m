@@ -13,7 +13,7 @@ function [ firstLayer, secondLayer, thirdLayer ] = changeMatrix2(E, h_1, V_1, W_
 % S - desired output
 % gName - name of the g-function to use.
 
-outputAmount = size(S,1);
+outputAmount = size(S,2);
 inputAmount = size(E,1);
 layerAmount_2 = size(h_2,1);
 layerAmount_1 = size(h_1,1);
@@ -23,7 +23,7 @@ for i = 1:outputAmount
     g_3_prim(i) = gDerivated('lineal', h_3(i));
 end
 
-delta_3 = (S - o(2:end)).*g_3_prim;
+delta_3 = (S - o).*g_3_prim;
 thirdLayer = delta_3*transpose(V_2);
 
 g_2_prim = zeros(layerAmount_2,1);
@@ -42,7 +42,4 @@ end
 delta_1 = transpose(W_2(:,2:end))*delta_2.* g_1_prim;
 firstLayer = delta_1*transpose(E);
 
-% disp(firstLayer);
-% disp(secondLayer);
-% disp(thirdLayer);
 end
