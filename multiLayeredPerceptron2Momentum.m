@@ -1,4 +1,4 @@
-function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(W_1, W_2, W_3, saturationControl, trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol, hasAdaptativeEta)
+function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(W_1, W_2, W_3, saturationControl, trainingSet, middleAmount_2, middleAmount_3, gName, maxIt, calcAllFreq, ETol, hasAdaptativeEta, a_etha, b_etha)
 
     training = trainingSet(:,1:end-1);
     expected = trainingSet(:,end);
@@ -60,46 +60,35 @@ function [W_1_best, W_2_best, W_3_best, diff] = multiLayeredPerceptron2Momentum(
             % Part that regulates how change_weight changes. Decrease if the
             % error doesn't decrease. Increase if error decreases many times in
             % a row.
-<<<<<<< HEAD
+
             if(hasAdaptativeEta!=-1)
                 if( i!=1 && mod(i/trainingAmount,25)==0)
                     if (E >= E_best && E_best ~= -1)
                         W_1 = W_1_best;
                         W_2 = W_2_best;
                         W_3 = W_3_best;
+                        alpha = 0;
                         % W_1_prev = W_1_best_prev;
                         % W_2_prev = W_2_best_prev;
                         % W_3_prev = W_3_best_prev;
-                        change_weight = 0.999*change_weight;
-=======
-            if( i!=1 && mod(i/trainingAmount,25)==0)
-                if (E >= E_best && E_best ~= -1)
-                    W_1 = W_1_best;
-                    W_2 = W_2_best;
-                    W_3 = W_3_best;
-                    alpha = 0;
-                    % W_1_prev = W_1_best_prev;
-                    % W_2_prev = W_2_best_prev;
-                    % W_3_prev = W_3_best_prev;
-                    change_weight = 0.5*change_weight;
-                    decreaseCounter = 0;
-                    if (change_weight < 10^-10)
-                        change_weight = 0.05;
-                    end
-                elseif (E < E_best || E_best == -1)
-                    E_best = E;
-                    W_1_best = W_1;
-                    W_2_best = W_2;
-                    W_3_best = W_3;
-                    alpha = 0.4;
-                    % W_1_best_prev = W_1_prev;
-                    % W_2_best_prev = W_2_prev;
-                    % W_3_best_prev = W_3_prev;
-                    decreaseCounter = decreaseCounter + 1;
-                    if (decreaseCounter == 5)
-                        change_weight = change_weight + 0.4;
->>>>>>> ec1a602f044dc6b4afc1db3e1de7e0fcddfae2f1
+                        change_weight = b_etha*change_weight;
                         decreaseCounter = 0;
+                        if (change_weight < 10^-10)
+                            change_weight = 0.05;
+                        end
+                    elseif (E < E_best || E_best == -1)
+                        E_best = E;
+                        W_1_best = W_1;
+                        W_2_best = W_2;
+                        W_3_best = W_3;
+                        alpha = 0.4;
+                        % W_1_best_prev = W_1_prev;
+                        % W_2_best_prev = W_2_prev;
+                        % W_3_best_prev = W_3_prev;
+                        decreaseCounter = decreaseCounter + 1;
+                        if (decreaseCounter == 5)
+                            change_weight = change_weight + a_etha;
+                            decreaseCounter = 0;
                         if (change_weight < 10^-10)
                             change_weight = 0.05;
                         end
