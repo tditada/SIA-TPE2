@@ -78,8 +78,8 @@ decreaseCounter = 0;
             
             % Break if error is smaller than tollerance
             if (E < ETol)
-                W{1} = W_1_best;
-                W{2} = W_2_best;
+                W{1} = W_1;
+                W{2} = W_2;
                 disp('Error:');
                 disp(E);
                 disp(' ');

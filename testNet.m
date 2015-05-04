@@ -1,26 +1,26 @@
 %% testNet: testea la red con los pesos dados
-function [outputs] = testNet(W, diff, testing, expected, gName, hiddenAmount)
+function [outputs] = testNet(W, testing, expected, gName, hiddenAmount)
 	WAmmount = hiddenAmount+1;
-	training = [testing, expected];
-	trainingAmount = size(testing, 1);
-	clear; clf
-
-	subplot(1,2,1);
-	plot(diff); shg;
-
-	Out = zeros(trainingAmount,1);
-	for i=1:trainingAmount
-		V=transpose(training(i,:));
-		for  j=1:hiddenAmount
-			if(i==WAmmount)
-				gName = 'lineal';
-			end
-			[h, V] = calculateLayer(W{i},V,gName);
-		end
-	    Out(i) = V(2);
+	inputAmount = size(testing,2);
+	testingAmount = size(testing,1);
+	testing = [-1*ones(size(testing,1),1) testing];
+	for j=1:testingAmount
+		% V = transpose(testing(j,:));
+		% for i=1:WAmmount
+			% if(i==WAmmount)
+			% 	gName = 'lineal';
+			% end
+			% [h, V] = calculateLayer(W{i}, V, gName);
+			
+			[h_1, V] = calculateLayer(W{1}, transpose(testing(j,:)), gName);
+			[h_2, o] = calculateLayer(W{2}, V, 'lineal');
+			
+		% end
+		Out(j) = o(2);
 	end
-	subplot(1,2,2);
-	plot(training(:,1),Out); hold on;
-	plot(training(:,1),expected,'r*'); shg
-
+	disp('out');
+	disp(Out);
+	figure(1);
+	plot(testing(:,2), Out); hold on;
+	plot(testing(:,2), expected, 'r*'); hold off; shg
 end
