@@ -16,8 +16,9 @@ w_3 = csvread('W_3_neurons_3_1.csv');
 
 W{1} = w_1;
 W{2} = w_2;
-if(W_3!=-1)
-	W{3} = W_3;
+if(w_3!=-1)
+	W{3} = w_3;
 end
-%trainNet(W,trainingAmount, hiddenAmount, middleAmount, maxIt, ETol, gName, saturationControl, hasAdaptativeEta, hasMomentum,a_etha, b_etha)
-[W, diff] = trainNet(W, trainingAmount, 2, middleAmount,maxIt, ETol, gName, saturationControl,1, -1, 0.2, 0.5);
+
+% trainNet(W, trainingAmount, hiddenAmount, maxIt, ETol, gName, saturationControl, hasAdaptativeEta, hasMomentum, a_etha, b_etha)
+[W, dif] = trainNet(W, trainingAmount, 2,maxIt, ETol, gName, -1, -1, -1, 0.2, 0.5);
