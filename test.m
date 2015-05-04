@@ -1,10 +1,10 @@
 %% Test
 clear; clf
 trainingAmount = 200;
-middleAmount = 15;
+middleAmount = 13;
 maxIt = 10000000;
 calcAllFreq = 200;
-ETol = 0.25;
+ETol = 0.15;
 saturationControl = 25;
 gName = 'exponencial';
 [training, expected] = generateTrainingTPfunctionChosenOnes(trainingAmount);

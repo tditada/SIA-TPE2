@@ -93,10 +93,12 @@ for i = 1:maxIt
         
         % Break if error is smaller than tollerance
         if (E < ETol)
-           W{1} = W_1;
-           W{2} = W_2;
-           W{3} = W_3;
-           return;
+            W{1} = W_1;
+            W{2} = W_2;
+            W{3} = W_3;
+            disp('Error:');
+            disp(E);
+            return;
         end
         else
             % To calculate how we should change the weights and changing the weights.

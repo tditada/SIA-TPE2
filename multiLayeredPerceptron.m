@@ -30,8 +30,6 @@ decreaseCounter = 0;
                 [h_1, V] = calculateLayer(W_1, transpose(training(training_number,:)), gName);
                 [h_2, o] = calculateLayer(W_2, V, 'lineal');
                 E = E + 1/2*(expected(training_number) - o(2))^2;
-                % disp(E);
-                % fflush(stdout);
             end
             % Adding a new data point over error-history.
             if(i ~= 1)
@@ -65,12 +63,7 @@ decreaseCounter = 0;
             end
      
             % Output. Both to command-line and to screen.
-            disp(trainingAmount);
-            disp(i);
-            fflush(stdout);
-            if (mod(i,20*trainingAmount) == 0)
-                       disp('holis');
-                fflush(stdout);
+            if (mod(i,10*trainingAmount) == 0)
                 Out = zeros(size(training,1),1);
                 for j=1:size(training,1)
                     [h_1, V] = calculateLayer(W_1, transpose(training(j,:)), gName);
@@ -87,6 +80,11 @@ decreaseCounter = 0;
             if (E < ETol)
                 W{1} = W_1_best;
                 W{2} = W_2_best;
+                disp('Error:');
+                disp(E);
+                disp(' ');
+                disp('Cantidad de epocas');
+                disp(i/trainingAmount);
                 return;
             end
         else
