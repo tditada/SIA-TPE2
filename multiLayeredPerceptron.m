@@ -72,9 +72,9 @@ decreaseCounter = 0;
                 end
                 subplot(1,2,1); plot(dif);
                 subplot(1,2,2);
-                % plot(training(:,2)',Out); hold on;
+                plot(training(:,2)',Out); hold on;
                 plot(training(:,2)',expected,'r*'); 
-                % hold off; 
+                hold off; 
                 shg;
             end
             
