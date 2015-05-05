@@ -4,11 +4,11 @@ trainingAmount = 100;
 testingAmount = 200;
 middleAmount{1} = 6;
 middleAmount{2} = 3;
-maxIt = 10000000;
+maxIt = 1000*trainingAmount;
 ETol = 0.15;
 saturationControl = 25;
 hiddenAmount = 2;
-gName = 'tangente';
+gName = 'exponencial';
 [training, expected] = generateTrainingTPfunctionChosenOnes(trainingAmount);
 training = [training, expected];
 
@@ -23,7 +23,7 @@ if(w_3!=-1)
 end
 
 % trainNet(W, trainingAmount, hiddenAmount, maxIt, ETol, gName, saturationControl, hasAdaptativeEta, hasMomentum, a_etha, b_etha)
-[W, dif] = trainNet(W, trainingAmount, hiddenAmount, maxIt, ETol, gName, -1, -1, -1, 0.2, 0.5);
+[W, dif] = trainNet(W, trainingAmount, hiddenAmount, maxIt, ETol, gName,-1, -1, 1, 0.2, 0.9);
 filename = ['training_', gName,'_',int2str(hiddenAmount), 'capas_1neuronas', int2str(middleAmount{1}),'_2neuronas-',int2str(middleAmount{2}), '_trainingAmount', int2str(trainingAmount)];
 print([filename,'.jpg']);
 

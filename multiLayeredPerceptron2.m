@@ -85,8 +85,8 @@ for i = 1:maxIt
                 Out(j) = o(2);
                 out=Out;
             end
-            subplot(1,2,1); h = plot(dif);
-            subplot(1,2,2);
+            subplot(1,2,1);title('error cuadrático medio'); plot(dif);
+            subplot(1,2,2);title('aprendizaje');
             plot(training(:,2)',Out); hold on;
             plot(training(:,2)',expected,'r*'); hold off; shg;
         end
