@@ -6,7 +6,7 @@ weights = zeros(outputAmount, inputAmount + 1);
 
 for i = 1:outputAmount
     for j = 1:inputAmount + 1
-        weights(i,j) = rand - 0.5;
+        weights(i,j) = 2*rand - 1;
     end
 end
 

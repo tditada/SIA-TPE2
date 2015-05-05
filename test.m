@@ -1,27 +1,23 @@
 %% Test
-clear;
-trainingAmount = 100;
-middleAmount = 15;
-maxIt = 100000;
-calcAllFreq = 25;
-ETol = 0.005;
-learningFunction = 'symmetry';
-gName = 'sigmodea';
-[training, expected] = generateTrainingTPfunction(trainingAmount);
+clear; clf
+trainingAmount = 200;
+middleAmount = 13;
+maxIt = 10000000;
+ETol = 0.25;
+saturationControl = 25;
+gName = 'exponencial';
+[training, expected] = generateTrainingTPfunctionChosenOnes(trainingAmount);
 training = [training, expected];
 
-[W_1, W_2, diff] = multiLayeredPerceptron(training, middleAmount, gName, maxIt, calcAllFreq, ETol);
-subplot(2,1,1)
-plot(diff); shg;
+% w_1 = csvread('W_1_neurons_1_15.csv');
+% w_2 = csvread('W_2_neurons_15_1.csv');
+w_1 = csvread('W_1_neurons_1_15.csv');
+w_2 = csvread('W_2_neurons_15_1.csv');
+W{1} = w_1;
+W{2} = w_2;
+% trainNet(W, trainingAmount, hiddenAmount, maxIt, ETol, gName, saturationControl, hasAdaptativeEta, hasMomentum, a_etha, b_etha)
+[W, dif] = trainNet(W, trainingAmount, 1,maxIt, ETol, gName, -1, 1, -1, 0.2, 0.9);
 
-%%
-clf;
-Out = zeros(trainingAmount,1);
-for i=1:trainingAmount
-    [h_1, V] = calculateLayer(W_1, transpose(training(i)), gName);
-    [h_2, o] = calculateLayer(W_2, V, gName);
-    Out(i) = o(2);
-end
-subplot(2,1,2)
-plot(training(:,1),Out); hold on;
-plot(training(:,1),expected,'r'); shg
+csvwrite('exp_mom_1capa_15neu_w1.csv',W{1});
+
+csvwrite('exp_mom_1capa_15neu_w2.csv',W{2});

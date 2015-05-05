@@ -17,7 +17,7 @@ layerAmount = size(h_1,1);
 
 g_2_prim = zeros(outputAmount,1);
 for i = 1:outputAmount
-    g_2_prim(i) = gDerivated(gName, h_2(i));
+    g_2_prim(i) = gDerivated('lineal', h_2(i));
 end
 
 delta_2 = (S - o(2:end)).*g_2_prim;

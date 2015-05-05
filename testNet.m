@@ -1,13 +1,36 @@
-%% testNet: given W_1 and W_2, test the net with your training.
-function [outputs] = testNet(W_1, W_2, training, expected, gName)
+%% testNet: testea la red con los pesos dados
+function [Out] = testNet(W, testing, expected, gName, hiddenAmount)
+	% WAmmount = hiddenAmount+1;
+	inputAmount = size(testing,2);
+	testingAmount = size(testing,1);
+	testing = [-1*ones(size(testing,1),1) testing];
+	layers=hiddenAmount+1;
+	for j=1:testingAmount
+		% V = transpose(testing(j,:));
+		% for i=1:WAmmount
+			% if(i==WAmmount)
+			% 	gName = 'lineal';
+			% end
+			% [h, V] = calculateLayer(W{i}, V, gName);
+			V_aux=transpose(testing(j,:));
+			gName2=gName;
+			for i=1:layers
+				if(i==layers)
+					gName2='lineal';
+				end
+				[h_aux, V_aux] = calculateLayer(W{i}, V_aux, gName2);
+				h{i}=h_aux;
+				V{i}=V_aux;
+			end
+		% end
+		Out(j) = V_aux(2);
+	end
+	disp('out');
+	disp(Out);
 
-clf;
-Out = zeros(trainingAmount,1);
-for i=1:trainingAmount
-    [h_1, V] = calculateLayer(W_1, transpose(training(i)), gName);
-    [h_2, o] = calculateLayer(W_2, V, gName);
-    Out(i) = o(2);
+	clf
+	figure(1);
+	plot(testing(:,2)', Out); hold on;
+	plot(testing(:,2)', expected, 'r*'); hold off; shg
+	title('testing');
 end
-subplot(2,1,2)
-plot(training(:,1),Out); hold on;
-plot(training(:,1),expected,'r'); shg
