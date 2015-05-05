@@ -85,7 +85,7 @@ for i = 1:maxIt
                 Out(j) = o(2);
                 out=Out;
             end
-            subplot(1,2,1); plot(dif);
+            subplot(1,2,1); h = plot(dif);
             subplot(1,2,2);
             plot(training(:,2)',Out); hold on;
             plot(training(:,2)',expected,'r*'); hold off; shg;
@@ -96,8 +96,15 @@ for i = 1:maxIt
             W{1} = W_1;
             W{2} = W_2;
             W{3} = W_3;
+            subplot(1,2,1); title('error cuadrático medio');plot(dif);
+            subplot(1,2,2); title('aprendizaje');
+            plot(training(:,2)',Out); hold on;
+            plot(training(:,2)',expected,'r*'); hold off; shg;
             disp('Error:');
             disp(E);
+            disp(' ');
+            disp('Cantidad de epocas');
+            disp(i/trainingAmount);
             return;
         end
         else
