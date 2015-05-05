@@ -17,11 +17,13 @@ la cantidad de neuronas de la capa de abajo, seguido
 de la cantidad de nueronas de la capa de arriba.
 
 ##Instrucciones para correr con una capa oculta##
-En octave, si no existen los archivos de la cantidad de
-neuronas que se quiere, generarlos:
+En octave, si no existen los archivos de la cantidad de neuronas que se quiere, generarlos:
+
 weight1 = weightGenerator(inputAmount, outputAmount);
 weight2 = weightGenerator(inputAmount, outputAmount);
+
 Por ejemplo, para 15 neuronas en la capa oculta:
+
 weight1 = weightGenerator(1, 15);
 weight2 = weightGenerator(15, 1);
 
@@ -56,17 +58,21 @@ Esta función devuelve [W], siendo W los pesos que quedan en la red luego de ser
 Si se quiere probar esa red con esos pesos, hay que primero generar el conjunto de testeo de la siguiente manera:
 
 [tests, expected_test] = generateTestFunction(amount);
+
 siendo amount la cantidad de elementos que se quieren en el conjunto.
 Despues correr la funcion testNet
 
 [Out] = testNet(W, tests, expected_test, gName, hiddenAmount)
+
 Siendo W, el W obtenido anteriormente, tests y expected_test lo generado anteriormente, gName debe ser el mismo nombre que utilizó para entrenar la red, y hiddenAmount la misma cantidad de capas ocultas que se usó para entrenar la red.
 
 ##Instrucciones para correr con dos capas ocultas##
 
 Las instrucciones son las mismas que con una capa oculta, salvo que deben generarse tres matrices de pesos y asignar
+
 A{1} = weight1;
 A{2} = weight2;
 A{3} = weight3;
+
 y en donde diga hiddenAmount poner "2".
 
