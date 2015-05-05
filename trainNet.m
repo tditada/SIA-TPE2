@@ -1,5 +1,5 @@
 %% trainNet: funcion de entrenamiento
-function [W, dif] = trainNet(W, trainingAmount, hiddenAmount, maxIt, ETol, gName, saturationControl, hasAdaptativeEta, hasMomentum, a_etha, b_etha)
+function [W] = trainNet(W, trainingAmount, hiddenAmount, maxIt, ETol, gName, saturationControl, hasAdaptativeEta, hasMomentum, a_etha, b_etha)
 % middle amount tiene celdas una por cada cantidad en la capa oculta respectiva 
 % if saturation control = -1, no saturation.
 	[training, expected] = generateTrainingTPfunctionChosenOnes(trainingAmount);
