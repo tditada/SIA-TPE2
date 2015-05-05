@@ -26,15 +26,19 @@ weight1 = weightGenerator(1, 15);
 weight2 = weightGenerator(15, 1);
 
 Si se quiere guardarlos:
+
 csvwrite('W_1_neurons_1_15.csv',weight1);
 csvwrite('W_2_neurons_15_1.csv',weight2);
 
 Asignarlos a una celda
+
 A{1} = weight1;
 A{2} = weight2;
 
 Correr la funcion trainNet para entrenar la red con esos pesos
+
 [W] = trainNet(A, trainingAmount, hiddenAmount, maxIt, ETol, gName, saturationControl, hasAdaptativeEta, hasMomentum, a_etha, b_etha)
+
 donde A es la celda anterior,
 trainingAmount es la cantidad de puntos deseados en el conjunto de entrenamiento,
 hiddenAmount la cantidad de capas ocultas,
@@ -50,9 +54,19 @@ b_etha, el número al cual se multiplica por eta cuando el error aumenta.
 Esta función devuelve [W], siendo W los pesos que quedan en la red luego de ser entrenada.
 
 Si se quiere probar esa red con esos pesos, hay que primero generar el conjunto de testeo de la siguiente manera:
+
 [tests, expected_test] = generateTestFunction(amount);
 siendo amount la cantidad de elementos que se quieren en el conjunto.
 Despues correr la funcion testNet
+
 [Out] = testNet(W, tests, expected_test, gName, hiddenAmount)
 Siendo W, el W obtenido anteriormente, tests y expected_test lo generado anteriormente, gName debe ser el mismo nombre que utilizó para entrenar la red, y hiddenAmount la misma cantidad de capas ocultas que se usó para entrenar la red.
+
+##Instrucciones para correr con dos capas ocultas##
+
+Las instrucciones son las mismas que con una capa oculta, salvo que deben generarse tres matrices de pesos y asignar
+A{1} = weight1;
+A{2} = weight2;
+A{3} = weight3;
+y en donde diga hiddenAmount poner "2".
 
