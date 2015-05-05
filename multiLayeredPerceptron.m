@@ -16,7 +16,7 @@ W_1_best = W_1; W_2_best = W_2;
 training = [-1*ones(size(training,1),1) training];
 
 % Start values
-change_weight = 0.5;
+change_weight = 0.05;
 E_best = -1;
 decreaseCounter = 0;
 
@@ -72,8 +72,10 @@ decreaseCounter = 0;
                 end
                 subplot(1,2,1); plot(dif);
                 subplot(1,2,2);
-                plot(training(:,2)',Out); hold on;
-                plot(training(:,2)',expected,'r*'); hold off; shg;
+                % plot(training(:,2)',Out); hold on;
+                plot(training(:,2)',expected,'r*'); 
+                % hold off; 
+                shg;
             end
             
             % Break if error is smaller than tollerance

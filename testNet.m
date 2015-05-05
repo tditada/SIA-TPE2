@@ -20,7 +20,7 @@ function [outputs] = testNet(W, testing, expected, gName, hiddenAmount)
 	end
 	disp('out');
 	disp(Out);
-	figure(1);
+	figure(2);
 	plot(testing(:,2), Out); hold on;
 	plot(testing(:,2), expected, 'r*'); hold off; shg
 end
